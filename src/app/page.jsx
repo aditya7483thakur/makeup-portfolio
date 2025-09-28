@@ -8,14 +8,12 @@ import WorkSection from "../components/WorkSection";
 export default function Home() {
   return (
     <>
-      {/* <Navbar />
+      <Navbar />
       <HeroSection />
       <AboutSection />
       <WorkSection />
       <ContactForm />
-      <Footer /> */}
-
-      <div className="bg-white font-bold text-7xl">HII</div>
+      <Footer />
     </>
   );
 }
