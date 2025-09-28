@@ -7,7 +7,6 @@ const navItems = [
   { label: "Home", href: "#section1" },
   { label: "About", href: "#section2" },
   { label: "Work", href: "#section3" },
-  { label: "Services", href: "#section3" }, // same section but can scroll down within
   { label: "Contact", href: "#section4" },
 ];
 

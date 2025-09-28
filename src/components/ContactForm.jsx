@@ -1,4 +1,3 @@
-// components/ContactForm.tsx
 "use client";
 
 import { useState } from "react";
@@ -8,24 +7,47 @@ export default function ContactForm() {
     name: "",
     location: "",
     makeupType: "",
-    date: "",
+    email: "",
+    message: "",
   });
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Replace with real submission logic (e.g. Formspree, API route, etc.)
-    console.log("Form submitted:", formData);
-    alert(
-      "Your request has been received. We will contact you back via email."
-    );
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (res.ok) {
+        alert("Your request has been received. We will contact you soon!");
+        setFormData({
+          name: "",
+          location: "",
+          makeupType: "",
+          email: "",
+          message: "",
+        });
+      } else {
+        alert("Something went wrong. Please try again later.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Failed to send request.");
+    }
   };
 
   return (
-    <section className="bg-[var(--muted)] text-[var(--card-foreground)] py-12 px-4">
+    <section
+      className="bg-[var(--muted)] text-[var(--card-foreground)] py-12 px-4"
+      id="section4"
+    >
       <div className="max-w-xl mx-auto bg-[var(--card)] p-8 rounded-lg shadow-md">
         <h2 className="text-2xl font-bold mb-6 text-[var(--primary)]">
           Contact Us
@@ -42,6 +64,20 @@ export default function ContactForm() {
               onChange={handleChange}
               className="w-full border border-[var(--border)] p-2 rounded bg-white"
               placeholder="Your Name"
+              required
+            />
+          </div>
+          <div>
+            <label className="block mb-1 text-sm text-[var(--muted-foreground)]">
+              Email
+            </label>
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              className="w-full border border-[var(--border)] p-2 rounded bg-white"
+              placeholder="Your Email"
               required
             />
           </div>
@@ -75,14 +111,14 @@ export default function ContactForm() {
           </div>
           <div>
             <label className="block mb-1 text-sm text-[var(--muted-foreground)]">
-              Date
+              Message
             </label>
-            <input
-              type="date"
-              name="date"
-              value={formData.date}
+            <textarea
+              name="message"
+              value={formData.message}
               onChange={handleChange}
               className="w-full border border-[var(--border)] p-2 rounded bg-white"
+              placeholder="Write your message..."
               required
             />
           </div>

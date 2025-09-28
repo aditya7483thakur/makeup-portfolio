@@ -1,29 +1,10 @@
 "use client";
 
-import { useKeenSlider } from "keen-slider/react";
 import Image from "next/image";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 
 export default function WorkSection() {
-  const [sliderRef, instanceRef] = useKeenSlider({
-    loop: true,
-    slides: { perView: 1, spacing: 15 }, // Always 1 slide per view
-    renderMode: "performance",
-    drag: true,
-    created(s) {
-      s.moveToIdx(0, true);
-    },
-    autoplay: true,
-  });
-
-  useEffect(() => {
-    if (!instanceRef.current) return;
-    const slider = instanceRef.current;
-    const interval = setInterval(() => {
-      slider.next();
-    }, 3000);
-    return () => clearInterval(interval);
-  }, [instanceRef]);
+  const [currentSlide, setCurrentSlide] = useState(0);
 
   const slides = [
     { name: "Bridal Look", img: "/home.jpg" },
@@ -31,6 +12,22 @@ export default function WorkSection() {
     { name: "Editorial Style", img: "/home.jpg" },
     { name: "Everyday Makeup", img: "/home.jpg" },
   ];
+
+  // Auto-play functionality
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [slides.length]);
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  };
 
   return (
     <section id="section3" className="py-20 bg-background text-foreground">
@@ -41,21 +38,20 @@ export default function WorkSection() {
             Our Work
           </h2>
 
-          <a
-            href="/portfolio.pdf"
-            download
-            className="absolute inset-0 flex items-center justify-center text-white text-lg sm:text-2xl font-semibold"
-          >
-            Click here to download portfolio
-          </a>
-
-          <div className="relative w-full h-[300px] sm:h-[400px] lg:h-[500px] rounded-2xl shadow-lg overflow-hidden">
+          <div className="relative w-full h-64 sm:h-72 md:h-80 lg:h-96  rounded-2xl shadow-lg overflow-hidden">
             <Image
               src="/home.jpg"
               alt="Portfolio Cover"
               fill
               className="object-cover rounded-2xl"
             />
+            <a
+              href="/portfolio.pdf"
+              download
+              className="absolute inset-0 flex items-center justify-center text-white text-lg sm:text-2xl font-semibold bg-black/30 hover:bg-black/50 transition-colors duration-300"
+            >
+              Click here to download portfolio
+            </a>
           </div>
         </div>
 
@@ -65,45 +61,71 @@ export default function WorkSection() {
             Our Services
           </h2>
 
-          <div
-            ref={sliderRef}
-            className="keen-slider rounded-2xl shadow-md overflow-hidden"
-          >
-            {slides.map((slide, i) => (
-              <div
-                key={i}
-                className="keen-slider__slide flex flex-col items-center justify-center bg-card text-card-foreground"
-              >
-                <div className="relative w-full h-64 sm:h-72 md:h-80 lg:h-96 rounded-lg overflow-hidden">
+          <div className="relative w-full h-64 sm:h-72 md:h-80 lg:h-96 rounded-2xl shadow-md overflow-hidden">
+            {/* Carousel Container */}
+            <div className="relative w-full h-full">
+              {slides.map((slide, index) => (
+                <div
+                  key={index}
+                  className={`absolute inset-0 transition-opacity duration-500 ease-in-out ${
+                    index === currentSlide ? "opacity-100" : "opacity-0"
+                  }`}
+                >
                   <Image
                     src={slide.img}
                     alt={slide.name}
                     fill
                     className="object-cover"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
+                  <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-center py-3 text-lg font-semibold">
+                    {slide.name}
+                  </div>
                 </div>
-                <div className="p-4 text-lg font-semibold text-secondary">
-                  {slide.name}
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
+
+            {/* Navigation Buttons */}
+            <button
+              onClick={prevSlide}
+              className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white p-3 rounded-full hover:cursor-pointer shadow-lg transition-all duration-200 z-10"
+              aria-label="Previous slide"
+            >
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </button>
+
+            <button
+              onClick={nextSlide}
+              className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white p-3 hover:cursor-pointer rounded-full shadow-lg transition-all duration-200 z-10"
+              aria-label="Next slide"
+            >
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
           </div>
-
-          {/* Prev Button */}
-          <button
-            onClick={() => instanceRef.current?.prev()}
-            className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-primary text-white p-2 rounded-full shadow hover:bg-secondary transition"
-          >
-            ◀
-          </button>
-
-          {/* Next Button */}
-          <button
-            onClick={() => instanceRef.current?.next()}
-            className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-primary text-white p-2 rounded-full shadow hover:bg-secondary transition"
-          >
-            ▶
-          </button>
         </div>
       </div>
     </section>

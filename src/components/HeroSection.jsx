@@ -8,7 +8,7 @@ export default function HeroSection() {
       }}
     >
       {/* Overlay */}
-      <div className="absolute inset-0 bg-background/60" />
+      <div className="absolute inset-0 bg-background/10" />
 
       {/* Content */}
       <div className="relative z-10 text-center px-6">

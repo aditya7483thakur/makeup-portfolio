@@ -42,19 +42,17 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
-
-    /* Adjusted dark mode palette */
     --card: #171717;
     --card-foreground: #fafafa;
     --muted: #1f1f1f;
     --muted-foreground: #bdbdbd;
     --border: #333333;
   }
-}
+} */
 
 body {
   background: var(--background);

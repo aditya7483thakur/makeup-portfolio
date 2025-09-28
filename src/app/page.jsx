@@ -1,19 +1,21 @@
-import AboutSection from "@/components/AboutSection";
-import ContactForm from "@/components/ContactForm";
-import Footer from "@/components/Footer";
-import HeroSection from "@/components/HeroSection";
-import Navbar from "@/components/Navbar";
-import WorkSection from "@/components/WorkSection";
+import AboutSection from "../components/AboutSection";
+import ContactForm from "../components/ContactForm";
+import Footer from "../components/Footer";
+import HeroSection from "../components/HeroSection";
+import Navbar from "../components/Navbar";
+import WorkSection from "../components/WorkSection";
 
 export default function Home() {
   return (
     <>
-      <Navbar />
+      {/* <Navbar />
       <HeroSection />
       <AboutSection />
       <WorkSection />
       <ContactForm />
-      <Footer />
+      <Footer /> */}
+
+      <div className="bg-white font-bold text-7xl">HII</div>
     </>
   );
 }
