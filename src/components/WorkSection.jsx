@@ -1,12 +1,13 @@
 "use client";
 
 import { useKeenSlider } from "keen-slider/react";
+import Image from "next/image";
 import { useEffect } from "react";
 
 export default function WorkSection() {
   const [sliderRef, instanceRef] = useKeenSlider({
     loop: true,
-    slides: { perView: 1, spacing: 15 },
+    slides: { perView: 1, spacing: 15 }, // Always 1 slide per view
     renderMode: "performance",
     drag: true,
     created(s) {
@@ -15,7 +16,6 @@ export default function WorkSection() {
     autoplay: true,
   });
 
-  // Auto slide every 3s
   useEffect(() => {
     if (!instanceRef.current) return;
     const slider = instanceRef.current;
@@ -34,25 +34,37 @@ export default function WorkSection() {
 
   return (
     <section id="section3" className="py-20 bg-background text-foreground">
-      <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
-        {/* Left: Portfolio Download */}
-        <div className="space-y-6 text-center md:text-left">
-          <img
-            src="/home.jpg"
-            alt="Portfolio Cover"
-            className="rounded-2xl shadow-lg w-full h-[400px] object-cover"
-          />
+      <div className="lg:max-w-7xl mx-auto px-6 flex flex-col lg:flex-row justify-center items-start lg:items-center gap-8">
+        {/* Left: Our Work */}
+        <div className="w-full lg:w-1/2 relative space-y-4">
+          <h2 className="text-2xl sm:text-3xl font-bold text-center md:text-left text-primary">
+            Our Work
+          </h2>
+
           <a
             href="/portfolio.pdf"
             download
-            className="inline-block px-6 py-3 bg-primary text-white rounded-lg shadow-md hover:bg-secondary transition"
+            className="absolute inset-0 flex items-center justify-center text-white text-lg sm:text-2xl font-semibold"
           >
-            Download Portfolio
+            Click here to download portfolio
           </a>
+
+          <div className="relative w-full h-[300px] sm:h-[400px] lg:h-[500px] rounded-2xl shadow-lg overflow-hidden">
+            <Image
+              src="/home.jpg"
+              alt="Portfolio Cover"
+              fill
+              className="object-cover rounded-2xl"
+            />
+          </div>
         </div>
 
-        {/* Right: Carousel */}
-        <div className="relative">
+        {/* Right: Our Services */}
+        <div className="lg:w-1/2 relative w-full space-y-4">
+          <h2 className="text-2xl sm:text-3xl font-bold text-center md:text-left text-primary">
+            Our Services
+          </h2>
+
           <div
             ref={sliderRef}
             className="keen-slider rounded-2xl shadow-md overflow-hidden"
@@ -62,11 +74,14 @@ export default function WorkSection() {
                 key={i}
                 className="keen-slider__slide flex flex-col items-center justify-center bg-card text-card-foreground"
               >
-                <img
-                  src={slide.img}
-                  alt={slide.name}
-                  className="w-full h-72 object-cover"
-                />
+                <div className="relative w-full h-64 sm:h-72 md:h-80 lg:h-96 rounded-lg overflow-hidden">
+                  <Image
+                    src={slide.img}
+                    alt={slide.name}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
                 <div className="p-4 text-lg font-semibold text-secondary">
                   {slide.name}
                 </div>

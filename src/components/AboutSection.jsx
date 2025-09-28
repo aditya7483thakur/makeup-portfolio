@@ -1,13 +1,17 @@
+import Image from "next/image";
+
 export default function AboutSection() {
   return (
     <section id="section2" className="py-20 bg-muted text-foreground">
       <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
         {/* Left: Image */}
         <div className="relative w-full h-96 md:h-[500px]">
-          <img
+          <Image
             src="/home.jpg" // replace with your image
             alt="Makeup Artist"
-            className="w-full h-full object-cover rounded-2xl shadow-lg"
+            className="object-cover rounded-2xl shadow-lg"
+            fill
+            priority
           />
         </div>
 
